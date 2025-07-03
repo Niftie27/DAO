@@ -12,6 +12,8 @@ import Loading from './Loading';
 // import config from '../config.json';
 
 // ABIs
+// import TOKEN_ABI from '../abis/Token.json'
+import DAO_ABI from '../abis/DAO.json'
 
 // config
 import config from '../config.json';
@@ -23,9 +25,9 @@ function App() {
     const [provider, setProvider] = useState(null)
 
     const [account, setAccount] = useState(null)
-    const [accountBalance, setAccountBalance] = useState(0)
+    const [dao, setDao] = useState(null)
+    const [treasuryBalance, setTreasuryBalance] = useState(0)
 
-    const [price, setPrice] = useState(0)
 
     const [isLoading, setIsLoading] = useState(true)
 
@@ -35,17 +37,19 @@ function App() {
         setProvider(provider)
 
         // Initiate contracts
-        const token = new ethers.Contract(config[31337].token.address, TOKEN_ABI, provider)
-        console.log("Token deployed to:", token.address);
+        const dao = new ethers.Contract(config[31337].dao.address, DAO_ABI, provider)
+        setDao(dao)
+        console.log("Dao deployed to:", dao.address);
 
-        // Set accounts
+        // Fetch treasury balance
+        let treasuryBalance = await provider.getBalance(dao.address)
+        treasuryBalance = ethers.utils.formatUnits(treasuryBalance, 18)
+        setTreasuryBalance(treasuryBalance)
+
+        // Fetch accounts
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
         const account = ethers.utils.getAddress(accounts[0])
         setAccount(account)
-
-        // Fetch account balance
-        const accountBalance = ethers.utils.formatUnits(await token.balanceOf(account), 18)
-        setAccountBalance(accountBalance)
 
         setIsLoading(false)
     }
@@ -58,20 +62,22 @@ function App() {
 
     return(
         <Container>
-            <Navigation />
+            <Navigation account={account}/>
 
-            <h1 className='my-4 text-center'>Introducing DApp Token!</h1>
+            <h1 className='my-4 text-center'>Welcome to our DAO</h1>
 
             {isLoading ? (
                 <Loading />
             ) : (
                 <>
-                <p className ='text-center'><strong>Current Price:</strong> {price} ETH</p>
+                    <hr/>
+                    
+                    <p className='text-center'><strong>Treasury Balance:</strong> {treasuryBalance} ETH</p>
+
+                    <hr/>   
                 </>
             )}
-
-            <hr />
-          
+            
         </Container>
     )
 }
