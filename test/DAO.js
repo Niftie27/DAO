@@ -45,13 +45,7 @@ describe('DAO', () => {
 
         //Send tokens to investors 20%
         transaction = await token.connect(deployer).transfer(investor1.address, tokens(200000))
-        await transaction.wait()
-
-        transaction = await token.connect(deployer).transfer(investor2.address, tokens(200000))
-        await transaction.wait()
-
-        transaction = await token.connect(deployer).transfer(investor3.address, tokens(200000))
-        await transaction.wait()
+        
 
         transaction = await token.connect(deployer).transfer(investor4.address, tokens(200000))
         await transaction.wait()
