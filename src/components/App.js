@@ -4,6 +4,7 @@ import { ethers } from 'ethers';
 
 // Components
 import Navigation from './Navigation';
+import Proposals from './Proposals';
 import Loading from './Loading';
 
 // ABIs: Import your contract ABIs here
@@ -23,12 +24,13 @@ function App() {
     // null means "no provider yet", 0 means "0 tokens yet"
     // userState hook
     const [provider, setProvider] = useState(null)
-
-    const [account, setAccount] = useState(null)
     const [dao, setDao] = useState(null)
     const [treasuryBalance, setTreasuryBalance] = useState(0)
 
+    const [account, setAccount] = useState(null)
 
+    const [proposals, setProposals] = useState(null)
+    const [quorum, setQuorum] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
 
     const loadBlockchainData = async () => {
@@ -50,6 +52,19 @@ function App() {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
         const account = ethers.utils.getAddress(accounts[0])
         setAccount(account)
+
+        const count = await dao.proposalCount()
+        const items = []
+
+        for(var i = 0; i < count; i++) {
+            // Fetch proposals
+            const proposal = await dao.proposals(i + 1)
+            items.push(proposal)
+        }
+
+        setProposals(items)
+
+        setQuorum(await dao.quorum())
 
         setIsLoading(false)
     }
@@ -73,8 +88,16 @@ function App() {
                     <hr/>
                     
                     <p className='text-center'><strong>Treasury Balance:</strong> {treasuryBalance} ETH</p>
+                    
+                    <hr/>
 
-                    <hr/>   
+                    <Proposals
+                        provider={provider}
+                        dao={dao}
+                        proposals={proposals}
+                        quorum={quorum}
+                        setIsLoading={setIsLoading}
+                    />
                 </>
             )}
             

@@ -21,6 +21,8 @@ contract DAO {
     uint256 public proposalCount;
     mapping(uint256 => Proposal) public proposals;
 
+    mapping(address => mapping(uint256 => bool)) votes;
+
     event Propose(
         uint id,
         uint256 amount,
@@ -74,8 +76,6 @@ contract DAO {
             msg.sender
         );
     }
-
-    mapping(address => mapping(uint256 => bool)) votes;
 
     function vote(uint256 _id) external onlyInvestor {
         // Fetch proposal from mapping by id
