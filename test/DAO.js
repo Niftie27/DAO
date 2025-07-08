@@ -45,7 +45,13 @@ describe('DAO', () => {
 
         //Send tokens to investors 20%
         transaction = await token.connect(deployer).transfer(investor1.address, tokens(200000))
-        
+        await transaction.wait()
+
+        transaction = await token.connect(deployer).transfer(investor2.address, tokens(200000))
+        await transaction.wait()
+
+        transaction = await token.connect(deployer).transfer(investor3.address, tokens(200000))
+        await transaction.wait()
 
         transaction = await token.connect(deployer).transfer(investor4.address, tokens(200000))
         await transaction.wait()
@@ -248,7 +254,7 @@ describe('DAO', () => {
                 result = await transaction.wait()
 
                 // Try to finalize again
-                await expect(dao.connect(investor1).finalizeProposal(1).to.be.reverted)
+                await expect(dao.connect(investor1).finalizeProposal(1)).to.be.reverted
                 })
             })
         })

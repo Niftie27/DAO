@@ -4,6 +4,7 @@ import { ethers } from 'ethers';
 
 // Components
 import Navigation from './Navigation';
+import Create from './Create';
 import Proposals from './Proposals';
 import Loading from './Loading';
 
@@ -85,11 +86,17 @@ function App() {
                 <Loading />
             ) : (
                 <>
-                    <hr/>
+                    <Create 
+                        provider={provider}
+                        dao={dao}
+                        setIsLoading={setIsLoading}
+                    />
+
+                    <hr className="my-4 border border-primary border-2 opacity-20" />
                     
                     <p className='text-center'><strong>Treasury Balance:</strong> {treasuryBalance} ETH</p>
                     
-                    <hr/>
+                    <hr className="my-4 border border-primary border-2 opacity-20" />
 
                     <Proposals
                         provider={provider}

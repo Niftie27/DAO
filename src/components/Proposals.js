@@ -62,30 +62,20 @@ const Proposals = ({ provider, dao, proposals, quorum, setIsLoading }) => {
       </td>
       <td>
         {!proposal.finalized && proposal.votes > quorum && (
-          <Button
+        <Button
           variant="success"
           style={{ width: '100%' }}
-          onClick={() => finalizeHandler(proposal.id)}>
+          onClick={() => finalizeHandler(proposal.id)}
+        >
           Finalize
         </Button>
         )}
       </td>
     </tr>
     ))}
-    <tr>
-      <td>2</td>
-      <td>Add New Member</td>
-      <td>0xabcd...5678</td>
-      <td>3</td>
-      <td>Finalized</td>
-      <td>20</td>
-      <td>✓</td>
-      <td>✓</td>
-    </tr>
   </tbody>
 </Table>
-  )
-
+  );
 }
 
-export default Proposals
+export default Proposals;

@@ -81,7 +81,7 @@ contract DAO {
         // Fetch proposal from mapping by id
         Proposal storage proposal = proposals[_id];
 
-        //Don't let investors vote twice
+        // Don't let investors vote twice
         require(!votes[msg.sender][_id], "already voted");
 
         // update votes

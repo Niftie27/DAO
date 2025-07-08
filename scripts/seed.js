@@ -15,11 +15,11 @@ async function main() {
     console.log(`Fetching accounts & network...\n`)
 
     const accounts = await ethers.getSigners()
-    funder = accounts[0]    // also deployer
-    investor1 = accounts[1]
-    investor2 = accounts[2]
-    investor3 = accounts[3]
-    recipient = accounts[4]
+    const funder = accounts[0]    // also deployer
+    const investor1 = accounts[1]
+    const investor2 = accounts[2]
+    const investor3 = accounts[3]
+    const recipient = accounts[4]
 
     let transaction
 
@@ -106,3 +106,4 @@ main()
         console.error(error);
         process.exit(1);
     });
+    
