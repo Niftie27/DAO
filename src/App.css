@@ -24,21 +24,6 @@
   color: white;
 }
 
-.button {
-  background: transparent;
-  border: 1.5px solid var(--clr-blue, #2187d0); /* fallback color added */
-  border-radius: 10px;
-  color: var(--clr-blue, #2187d0);
-  cursor: pointer;
-  font-weight: 700;
-  margin: 0.75em auto;
-  padding: 1.15em;
-  position: relative;
-  transition: all 0.25s ease;
-  width: 100%;
-}
-
-
 .App-link {
   color: #61dafb;
 }

@@ -48,26 +48,32 @@ async function main() {
     console.log(`DAO deployed to: ${dao.address}\n`)
 
     // Funder sends Ether to DAO treasury
-    transaction = await funder.sendTransaction({ to: dao.address, value: ether(1000) })
+    // transaction = await funder.sendTransaction({ to: dao.address, value: ether(1000) })          // ❌ removed because of 6th HW instruction
+    // await transaction.wait()                                                                     // ❌ removed because of 6th HW instruction
+    // console.log('Sent funds to dao treasury...\n')                                               // ❌ removed because of 6th HW instruction
+    // ✅ Fund DAO treasury with DAPP tokens instead of ETH
+    transaction = await token.transfer(dao.address, tokens(200000))
     await transaction.wait()
-    console.log('Sent funds to dao treasury...\n')
+    console.log('Sent DAPP to DAO treasury...\n')
+
 
     // Create 3 proposals and let them pass
     for (var i = 0; i < 3; i++) {
         // Create proposal
-        transaction = await dao.connect(investor1).createProposal(`Proposal ${i + 1}`, ether(100), recipient.address)
+        // transaction = await dao.connect(investor1).createProposal(`Proposal ${i + 1}`, ether(100), recipient.address)    // ❌ removed because of 6th HW instruction
+        transaction = await dao.connect(investor1).createProposal(`Proposal ${i + 1}`, tokens(100), recipient.address, "Fund Jane for web development")   // ✅ tokens, not Ether
         await transaction.wait()
 
         // Vote 1
-        transaction = await dao.connect(investor1).vote(i + 1)
+        transaction = await dao.connect(investor1).vote(i + 1, true)
         await transaction.wait()
 
         // Vote 2
-        transaction = await dao.connect(investor2).vote(i + 1)
+        transaction = await dao.connect(investor2).vote(i + 1, true)
         await transaction.wait()
 
         // Vote 3
-        transaction = await dao.connect(investor3).vote(i + 1)
+        transaction = await dao.connect(investor3).vote(i + 1, true)
         await transaction.wait()
 
         // Finalize
@@ -80,15 +86,17 @@ async function main() {
     console.log(`Creating one more proposal ${i + 1}\n`)
 
     // Create one more proposal
-    transaction = await dao.connect(investor1).createProposal(`Proposal 4`, ether(100), recipient.address)
+    // transaction = await dao.connect(investor1).createProposal(`Proposal 4`, ether(100), recipient.address) // ❌ removed because of 6th HW instruction
+    // ✅ One more proposal in DAPP
+    transaction = await dao.connect(investor1).createProposal(`Proposal 4`, tokens(100), recipient.address, "Fund Eric for animation")
     await transaction.wait()
 
     // Vote 1
-    transaction = await dao.connect(investor2).vote(4)
+    transaction = await dao.connect(investor2).vote(4, true)
     await transaction.wait()
 
     // Vote 2
-    transaction = await dao.connect(investor3).vote(4)
+    transaction = await dao.connect(investor3).vote(4, true)
     await transaction.wait()
 
     console.log(`Finished.\n`)

@@ -9,6 +9,7 @@ const Create = ({ provider, dao, setIsLoading }) => {
   const [amount, setAmount] = useState('0')
   const [address, setAddress] = useState('')
   const [isWaiting, setIsWaiting] = useState(false)
+  const [description, setDescription] = useState('')
 
 
   const createHandler = async (e) => {
@@ -19,7 +20,7 @@ const Create = ({ provider, dao, setIsLoading }) => {
       const signer = await provider.getSigner()
       const formattedAmount = ethers.utils.parseUnits(amount.toString(), 'ether')
       
-      const transaction = await dao.connect(signer).createProposal(name, formattedAmount, address)
+      const transaction = await dao.connect(signer).createProposal(name, formattedAmount, address, description)
       await transaction.wait()
     } catch {
       window.alert('User rejected or tx reverted')
@@ -51,6 +52,12 @@ const Create = ({ provider, dao, setIsLoading }) => {
           type='text'
           placeholder="Enter recipient"
           onChange={(e) => setAddress(e.target.value)}
+        />
+        <Form.Control
+          className="my-1"
+          type='text'
+          placeholder="Enter description"
+          onChange={(e) => setDescription(e.target.value)}
         />
         {isWaiting ? (
           <Spinner animation="border" style= {{ display: 'block', margin: '0 auto' }}/>
